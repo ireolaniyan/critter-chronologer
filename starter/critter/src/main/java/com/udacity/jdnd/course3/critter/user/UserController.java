@@ -98,7 +98,11 @@ public class UserController {
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        employeeService.setEmployeeAvailability(daysAvailable, employeeId);
+        try {
+            employeeService.setEmployeeAvailability(daysAvailable, employeeId);
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Employee with id: " + employeeId + " not found", exception);
+        }
     }
 
     @GetMapping("/employee/availability")
