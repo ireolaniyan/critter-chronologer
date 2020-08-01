@@ -26,6 +26,14 @@ public class Schedule {
     @ElementCollection
     private Set<EmployeeSkill> activities;
 
+    public Schedule(LocalDate date, Set<EmployeeSkill> activities) {
+        this.date = date;
+        this.activities = activities;
+    }
+
+    public Schedule() {
+    }
+
     public Long getId() {
         return id;
     }
