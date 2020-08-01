@@ -21,32 +21,13 @@ public class ScheduleService {
     ScheduleRepository scheduleRepository;
 
     @Autowired
-    CustomerRepository customerRepository;
+    PetRepository petRepository;
 
     @Autowired
     EmployeeRepository employeeRepository;
 
     @Autowired
-    PetRepository petRepository;
-
-    public List<Schedule> getAllSchedules() {
-        return scheduleRepository.findAll();
-    }
-
-    public List<Schedule> getPetSchedule(Long petId) {
-        Pet pet = petRepository.getOne(petId);
-        return scheduleRepository.findByPets(pet);
-    }
-
-    public List<Schedule> getEmployeeSchedule(Long employeeId) {
-        Employee employee = employeeRepository.getOne(employeeId);
-        return scheduleRepository.findByEmployee(employee);
-    }
-
-    public List<Schedule> getCustomerSchedule(Long customerId) {
-        Customer customer = customerRepository.getOne(customerId);
-        return scheduleRepository.findByPetsIn(customer.getPets());
-    }
+    CustomerRepository customerRepository;
 
     public Schedule saveSchedule(Schedule schedule, List<Long> petIds, List<Long> employeeIds) {
         List<Pet> pets = petRepository.findAllById(petIds);
@@ -57,4 +38,24 @@ public class ScheduleService {
 
         return scheduleRepository.save(schedule);
     }
+
+    public List<Schedule> getAllSchedules() {
+        return scheduleRepository.findAll();
+    }
+
+    public List<Schedule> getEmployeeSchedule(Long employeeId) {
+        Employee employee = employeeRepository.getOne(employeeId);
+        return scheduleRepository.findByEmployee(employee);
+    }
+
+    public List<Schedule> getPetSchedule(Long petId) {
+        Pet pet = petRepository.getOne(petId);
+        return scheduleRepository.findByPets(pet);
+    }
+
+    public List<Schedule> getCustomerSchedule(Long customerId) {
+        Customer customer = customerRepository.getOne(customerId);
+        return scheduleRepository.findByPetsIn(customer.getPets());
+    }
+
 }

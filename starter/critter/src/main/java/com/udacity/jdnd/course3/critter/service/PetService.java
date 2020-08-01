@@ -15,23 +15,11 @@ import java.util.List;
 @Transactional
 public class PetService {
     @Autowired
-    PetRepository petRepository;
-
-    @Autowired
     CustomerRepository customerRepository;
 
-    public Pet getPetById(Long petId) {
-        return petRepository.getOne(petId);
-    }
-
-    public List<Pet> getAllPets() {
-        return petRepository.findAll();
-    }
-
-    public List<Pet> getPetsByCustomerId(long customerId) {
-        return petRepository.findPetByCustomerId(customerId);
-    }
-
+    @Autowired
+    PetRepository petRepository;
+    
     public Pet savePet(Pet pet, Long customerId) {
         Customer customer = customerRepository.getOne(customerId);
         pet.setCustomer(customer);
@@ -43,5 +31,17 @@ public class PetService {
 
         customerRepository.save(customer);
         return pet;
+    }
+
+    public List<Pet> getPetsByCustomerId(long customerId) {
+        return petRepository.findPetByCustomerId(customerId);
+    }
+
+    public List<Pet> getAllPets() {
+        return petRepository.findAll();
+    }
+
+    public Pet getPetById(Long petId) {
+        return petRepository.getOne(petId);
     }
 }

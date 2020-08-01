@@ -19,18 +19,8 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    public Employee getEmployeeById(Long employeeId) {
-        return employeeRepository.getOne(employeeId);
-    }
-
     public Employee saveEmployee(Employee employee) {
         return employeeRepository.save(employee);
-    }
-
-    public void setEmployeeAvailability(Set<DayOfWeek> days, Long employeeId) {
-        Employee employee = employeeRepository.getOne(employeeId);
-        employee.setDaysAvailable(days);
-        employeeRepository.save(employee);
     }
 
     public List<Employee> getEmployeesByService(LocalDate date, Set<EmployeeSkill> skills){
@@ -40,4 +30,15 @@ public class EmployeeService {
                 .collect(Collectors.toList());
         return employees;
     }
+
+    public Employee getEmployeeById(Long employeeId) {
+        return employeeRepository.getOne(employeeId);
+    }
+
+    public void setEmployeeAvailability(Set<DayOfWeek> days, Long employeeId) {
+        Employee employee = employeeRepository.getOne(employeeId);
+        employee.setDaysAvailable(days);
+        employeeRepository.save(employee);
+    }
+
 }

@@ -21,14 +21,6 @@ public class CustomerService {
     @Autowired
     PetRepository petRepository;
 
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
-    }
-
-    public Customer getCustomerByPetId(Long petId) {
-        return petRepository.getOne(petId).getCustomer();
-    }
-
     public Customer saveCustomer(Customer customer, List<Long> petIds) {
         List<Pet> pets = new ArrayList<>();
         if (petIds != null && !petIds.isEmpty()) {
@@ -37,5 +29,13 @@ public class CustomerService {
 
         customer.setPets(pets);
         return customerRepository.save(customer);
+    }
+
+    public Customer getCustomerByPetId(Long petId) {
+        return petRepository.getOne(petId).getCustomer();
+    }
+
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 }
