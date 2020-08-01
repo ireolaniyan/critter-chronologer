@@ -20,7 +20,8 @@ public class EmployeeService {
     EmployeeRepository employeeRepository;
 
     public Employee saveEmployee(Employee employee) {
-        return employeeRepository.save(employee);
+        Employee newEmployee = employeeRepository.save(employee);
+        return newEmployee;
     }
 
     public List<Employee> getEmployeesByService(LocalDate date, Set<EmployeeSkill> skills){
@@ -32,7 +33,8 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeById(Long employeeId) {
-        return employeeRepository.getOne(employeeId);
+        Employee employee = employeeRepository.getOne(employeeId);
+        return employee;
     }
 
     public void setEmployeeAvailability(Set<DayOfWeek> days, Long employeeId) {

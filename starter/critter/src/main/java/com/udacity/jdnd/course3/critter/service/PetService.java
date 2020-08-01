@@ -22,26 +22,29 @@ public class PetService {
     
     public Pet savePet(Pet pet, Long customerId) {
         Customer customer = customerRepository.getOne(customerId);
+        List<Pet> pets = new ArrayList<>();
+
         pet.setCustomer(customer);
         pet = petRepository.save(pet);
-
-        List<Pet> pets = new ArrayList<>();
         pets.add(pet);
         customer.setPets(pets);
-
         customerRepository.save(customer);
+
         return pet;
     }
 
     public List<Pet> getPetsByCustomerId(long customerId) {
-        return petRepository.findPetByCustomerId(customerId);
+        List<Pet> pets = petRepository.findPetByCustomerId(customerId);
+        return pets;
     }
 
     public List<Pet> getAllPets() {
-        return petRepository.findAll();
+        List<Pet> pets = petRepository.findAll();
+        return pets;
     }
 
     public Pet getPetById(Long petId) {
-        return petRepository.getOne(petId);
+        Pet pet = petRepository.getOne(petId);
+        return pet;
     }
 }

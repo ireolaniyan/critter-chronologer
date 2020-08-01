@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.service;
 
+import com.sun.org.apache.xml.internal.dtm.ref.CustomStringPool;
 import com.udacity.jdnd.course3.critter.data.Customer;
 import com.udacity.jdnd.course3.critter.data.Pet;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
@@ -16,26 +17,26 @@ import java.util.stream.Collectors;
 @Transactional
 public class CustomerService {
     @Autowired
+    PetRepository petRepository;
+    @Autowired
     CustomerRepository customerRepository;
 
-    @Autowired
-    PetRepository petRepository;
-
     public Customer saveCustomer(Customer customer, List<Long> petIds) {
-        List<Pet> pets = new ArrayList<>();
+        List<Pet> customerPets = new ArrayList<>();
         if (petIds != null && !petIds.isEmpty()) {
-            pets = petIds.stream().map((petId) -> petRepository.getOne(petId)).collect(Collectors.toList());
+            customerPets = petIds.stream().map((petId) -> petRepository.getOne(petId)).collect(Collectors.toList());
         }
-
-        customer.setPets(pets);
+        customer.setPets(customerPets);
         return customerRepository.save(customer);
     }
 
     public Customer getCustomerByPetId(Long petId) {
-        return petRepository.getOne(petId).getCustomer();
+        Customer customer = petRepository.getOne(petId).getCustomer();
+        return customer;
     }
 
     public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAll();
+        return customers;
     }
 }
