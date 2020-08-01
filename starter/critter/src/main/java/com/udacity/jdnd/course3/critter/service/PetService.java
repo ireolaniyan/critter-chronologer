@@ -41,8 +41,6 @@ public class PetService {
         pets.add(pet);
         customer.setPets(pets);
 
-//        customer.insertPet(pet);
-
         customerRepository.save(customer);
         return pet;
     }

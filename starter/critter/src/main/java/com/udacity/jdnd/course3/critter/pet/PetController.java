@@ -21,38 +21,26 @@ public class PetController {
     PetService petService;
 
     // Convert Entity to DTO
-    private PetDTO getPetsDTO(Pet pet) {
-        PetDTO petDTO = new PetDTO();
-        petDTO.setId(pet.getId());
-        petDTO.setBirthDate(pet.getBirthDate());
-        petDTO.setName(pet.getName());
-        petDTO.setNotes(pet.getNotes());
-        petDTO.setOwnerId(pet.getCustomer().getId());
-        petDTO.setType(pet.getType());
-        return  petDTO;
+    private PetDTO convertPetToPetDTO(Pet pet) {
+        return new PetDTO(pet.getId(), pet.getType(), pet.getName(), pet.getCustomer().getId(), pet.getBirthDate(), pet.getNotes());
     }
 
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
-        Pet pet = new Pet();
-        pet.setType(petDTO.getType());
-        pet.setName(petDTO.getName());
-        pet.setBirthDate(petDTO.getBirthDate());
-        pet.setNotes(petDTO.getNotes());
-
-        return getPetsDTO(petService.savePet(pet, petDTO.getOwnerId()));
+        Pet pet = new Pet(petDTO.getType(), petDTO.getName(), petDTO.getBirthDate(), petDTO.getNotes());
+        return convertPetToPetDTO(petService.savePet(pet, petDTO.getOwnerId()));
     }
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
         Pet pet = petService.getPetById(petId);
-        return getPetsDTO(pet);
+        return convertPetToPetDTO(pet);
     }
 
     @GetMapping
     public List<PetDTO> getPets(){
         List<Pet> pets = petService.getAllPets();
-        return pets.stream().map(this::getPetsDTO).collect(Collectors.toList());
+        return pets.stream().map(this::convertPetToPetDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/owner/{ownerId}")
@@ -64,6 +52,6 @@ public class PetController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Owner pet does not exist with id " + ownerId, e);
         }
 
-        return pets.stream().map(this::getPetsDTO).collect(Collectors.toList());
+        return pets.stream().map(this::convertPetToPetDTO).collect(Collectors.toList());
     }
 }
