@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.pet;
 
 import com.udacity.jdnd.course3.critter.data.Pet;
+import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,12 +29,23 @@ public class PetController {
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
         Pet pet = new Pet(petDTO.getType(), petDTO.getName(), petDTO.getBirthDate(), petDTO.getNotes());
-        return convertPetToPetDTO(petService.savePet(pet, petDTO.getOwnerId()));
+        PetDTO convertedPet;
+        try {
+            convertedPet = convertPetToPetDTO(petService.savePet(pet, petDTO.getOwnerId()));
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pet could not be saved", exception);
+        }
+        return convertedPet;
     }
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
-        Pet pet = petService.getPetById(petId);
+        Pet pet;
+        try {
+            pet = petService.getPetById(petId);
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pet with id: " + petId + " not found", exception);
+        }
         return convertPetToPetDTO(pet);
     }
 
@@ -45,13 +57,12 @@ public class PetController {
 
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        List<Pet> pets = null;
+        List<Pet> pets;
         try {
             pets = petService.getPetsByCustomerId(ownerId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Owner pet does not exist with id " + ownerId, e);
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Owner pet with id " + ownerId + " not found", exception);
         }
-
         return pets.stream().map(this::convertPetToPetDTO).collect(Collectors.toList());
     }
 }
