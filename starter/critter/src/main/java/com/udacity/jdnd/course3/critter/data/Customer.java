@@ -20,6 +20,16 @@ public class Customer {
     @OneToMany(targetEntity = Pet.class)
     private List<Pet> pets;
 
+    public Customer(Long id, String name, String phoneNumber, String notes) {
+        this.id = id;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.notes = notes;
+    }
+
+    public Customer() {
+    }
+
     public Long getId() {
         return id;
     }

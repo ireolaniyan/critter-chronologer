@@ -32,14 +32,8 @@ public class UserController {
 
     // Convert Entities to DTOs
     private CustomerDTO getCustomerDTO(Customer customer){
-        CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setId(customer.getId());
-        customerDTO.setName(customer.getName());
-        customerDTO.setNotes(customer.getNotes());
-        customerDTO.setPhoneNumber(customer.getPhoneNumber());
         List<Long> petIds = customer.getPets().stream().map(Pet::getId).collect(Collectors.toList());
-        customerDTO.setPetIds(petIds);
-        return customerDTO;
+        return new CustomerDTO(customer.getId(), customer.getName(), customer.getPhoneNumber(), customer.getNotes(), petIds);
     }
 
     private EmployeeDTO getEmployeeDTO(Employee employee) {
@@ -53,11 +47,7 @@ public class UserController {
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
-        Customer customer = new Customer();
-        customer.setId(customerDTO.getId());
-        customer.setName(customerDTO.getName());
-        customer.setPhoneNumber(customerDTO.getPhoneNumber());
-        customer.setNotes(customerDTO.getNotes());
+        Customer customer = new Customer(customerDTO.getId(), customerDTO.getName(), customerDTO.getPhoneNumber(), customerDTO.getNotes());
         List<Long> petIds = customerDTO.getPetIds();
 
         return getCustomerDTO(customerService.saveCustomer(customer, petIds));
