@@ -21,6 +21,16 @@ public class Employee {
     @ElementCollection
     private Set<DayOfWeek> daysAvailable;
 
+    public Employee(Long id, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> daysAvailable) {
+        this.id = id;
+        this.name = name;
+        this.skills = skills;
+        this.daysAvailable = daysAvailable;
+    }
+
+    public Employee() {
+    }
+
     public Long getId() {
         return id;
     }

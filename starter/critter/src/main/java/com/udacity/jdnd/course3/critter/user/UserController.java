@@ -37,12 +37,7 @@ public class UserController {
     }
 
     private EmployeeDTO getEmployeeDTO(Employee employee) {
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setDaysAvailable(employee.getDaysAvailable());
-        employeeDTO.setId(employee.getId());
-        employeeDTO.setName(employee.getName());
-        employeeDTO.setSkills(employee.getSkills());
-        return employeeDTO;
+        return new EmployeeDTO(employee.getId(), employee.getName(), employee.getSkills(), employee.getDaysAvailable());
     }
 
     @PostMapping("/customer")
@@ -67,12 +62,7 @@ public class UserController {
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = new Employee();
-        employee.setId(employeeDTO.getId());
-        employee.setName(employeeDTO.getName());
-        employee.setDaysAvailable(employeeDTO.getDaysAvailable());
-        employee.setSkills(employeeDTO.getSkills());
-
+        Employee employee = new Employee(employeeDTO.getId(), employeeDTO.getName(), employeeDTO.getSkills(), employeeDTO.getDaysAvailable());
         return getEmployeeDTO(employeeService.saveEmployee(employee));
     }
 
