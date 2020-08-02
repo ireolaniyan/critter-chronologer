@@ -1,6 +1,5 @@
 package com.udacity.jdnd.course3.critter.service;
 
-import com.sun.org.apache.xml.internal.dtm.ref.CustomStringPool;
 import com.udacity.jdnd.course3.critter.data.Customer;
 import com.udacity.jdnd.course3.critter.data.Pet;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;

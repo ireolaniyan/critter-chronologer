@@ -29,7 +29,7 @@ public class ScheduleService {
     @Autowired
     CustomerRepository customerRepository;
 
-    public Schedule saveSchedule(Schedule schedule, List<Long> petIds, List<Long> employeeIds) {
+    public Schedule saveSchedule(Schedule schedule, List<Long> employeeIds, List<Long> petIds) {
         List<Pet> pets = petRepository.findAllById(petIds);
         List<Employee> employees = employeeRepository.findAllById(employeeIds);
 
